@@ -30,3 +30,19 @@ BEGIN
 END find_type;
 §';
 END;
+
+--It creates an object type and a table type to return 
+--  multimedia catalog results from the service functions.
+CREATE OR REPLACE TYPE mm_media_result_obj AS OBJECT (
+  media_id        NUMBER,
+  file_name       VARCHAR2(255),
+  file_type       VARCHAR2(30),
+  date_created    DATE,
+  location_name   VARCHAR2(200),
+  media_title     VARCHAR2(200),
+  annotations     VARCHAR2(4000),
+  keywords        VARCHAR2(4000),
+  description     VARCHAR2(1000),
+  file_size_bytes NUMBER
+);
+CREATE OR REPLACE TYPE mm_media_result_tab AS TABLE OF mm_media_result_obj;
