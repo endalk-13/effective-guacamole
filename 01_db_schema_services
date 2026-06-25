@@ -1,0 +1,32 @@
+BEGIN
+  EXECUTE IMMEDIATE q'§
+CREATE OR REPLACE FUNCTION find_type(p_filename IN VARCHAR2)
+RETURN VARCHAR2 DETERMINISTIC
+IS
+  v_ext VARCHAR2(30);
+BEGIN
+  IF p_filename IS NULL OR INSTR(p_filename, '.') = 0 THEN
+    RETURN 'unknown';
+  END IF;
+
+  v_ext := LOWER(REGEXP_SUBSTR(p_filename, '[^\.]+$'));
+
+  CASE
+    WHEN v_ext IN ('jpg','jpeg','png','gif','bmp','tif','tiff','webp','heic','svg') THEN
+      RETURN 'image';
+    WHEN v_ext IN ('mp4','mpeg','mpg','avi','mov','wmv','mkv','webm','m4v') THEN
+      RETURN 'video';
+    WHEN v_ext IN ('mp3','wav','aac','ogg','m4a','flac','wma') THEN
+      RETURN 'audio';
+    WHEN v_ext IN ('txt','csv','json','xml','html','htm','log') THEN
+      RETURN 'text';
+    WHEN v_ext IN ('pdf','doc','docx','ppt','pptx','xls','xlsx') THEN
+      RETURN 'document';
+    WHEN v_ext IN ('zip','rar','7z','tar','gz') THEN
+      RETURN 'archive';
+    ELSE
+      RETURN 'unknown';
+  END CASE;
+END find_type;
+§';
+END;
